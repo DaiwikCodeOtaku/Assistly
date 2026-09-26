@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Chatbot {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  messages  Message[]
+
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  role      String
+  content   String
+
+  chatbot   Chatbot  @relation(fields: [chatbotId], references: [id], onDelete: Cascade)
+  chatbotId String
+
+  createdAt DateTime @default(now())
+}
